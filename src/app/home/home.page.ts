@@ -39,8 +39,6 @@ export class HomePage {
     }
     this.updateTotal();
     var dataClone = _.cloneDeep(this.todo);
-    console.log('dataClone');
-    console.log(dataClone);
     this.history.push(dataClone);
     this.results = [...this.history];
   }
@@ -94,13 +92,12 @@ export class HomePage {
 
   filterCategory(event: any) {
     const query = event.target.value;
+    this.results = [];
     if (this.history.length !== 0) {
       for (const i in query) {
         const result = this.history.filter(d => d.categoria.indexOf(query[i]) > -1);
         if (result.length !== 0) {
-          this.results.push(this.history.filter(d => d.categoria.indexOf(query[i]) > -1));
-        } else {
-          this.results = [];
+          this.results.push(result[0]);
         }
       }
     }
