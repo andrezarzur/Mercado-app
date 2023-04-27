@@ -1,0 +1,195 @@
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+ion-header {
+  text-align: center;
+}
+
+.acompContent {
+  --background: linear-gradient(#F3EFE0, #c9c1a3);
+  height: 100%;
+}
+
+.checkContent {
+  --background: #F3EFE0;
+}
+
+.mainGrid {
+  padding: 0;
+}
+
+.historyGrid {
+  height: 20vh;
+}
+
+.historyCol {
+  height: 10px;
+}
+
+.historyContentList {
+  padding: 0;
+  overflow: hidden;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.historyHeader {
+  padding: 6px;
+}
+
+.historyCard {
+  text-align: center;
+  height: 40vh;
+  background-color: #f1f1f1; 
+  margin-top: 0; 
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerInfo {
+  background-color: #135d54;
+  border: solid 1px #fff;
+  color: #fff;
+  text-align: center;
+  height: 4vh;
+}
+
+.horizontal-line {
+  margin-top: 5%;
+  display: inline-block;
+}
+
+.hr1 {
+  width: 21%;
+  text-align: center;
+}
+.hr2 {
+  width: 6%;
+  margin-left: 5%;
+  font-size: 40px;
+  margin-bottom: 3%;
+}
+.hr3 {
+  width: 21%;
+  margin-left: 5%;
+  text-align: center;
+}
+.hr4 {
+  width: 6%;
+  margin-left: 5%;
+  font-size: 30px;
+  margin-bottom: 3%;
+}
+.hr5 {
+  width: 21%;
+  margin-left: 5%;
+  text-align: center;
+}
+
+.subText {
+  font-size: 12px;
+  color:#bdbdbd;
+  font-weight: bold;
+  margin: 0;
+}
+
+.contentText {
+  font-size: 16px;
+  margin: 0;
+}
+
+.cardHistory {
+  ion-card-header {
+    padding: 1vh;
+    font-size: 18px;
+    button {
+      position: absolute;
+      right: 2%;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background-color: red;
+      color: white;
+      bottom: 10%;
+    }
+  }
+  height: 15vh;
+  margin: 2%;
+}
+
+.cardForm {
+  height: 40vh;
+  position: relative;
+}
+
+.addButton {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-bottom: 3%;
+  bottom: 0px;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Lato';
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 3%;
+  display: inline-block;  
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  background: #2ecc71;
+  color: #fff;
+
+  &:active {
+    background: #27ae60;
+  }
+}
+
+.checkFab {
+    position: fixed;
+    bottom: 4%;
+    text-align: center;
+}
+
+.roundedBlock {
+  position:absolute;
+  color: green;
+  height: 300px;
+}

@@ -1,0 +1,124 @@
+<div class="roundedBlock">sxdsdfsdfsds</div>
+<ion-header>
+  <ion-toolbar>
+    <ion-segment value="all">
+      <ion-segment-button value="all" (click)="updateValue('acomp')">
+        Acompanhamento
+      </ion-segment-button>
+      <ion-segment-button value="favorites" (click)="updateValue('list')">
+        Lista
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true"  *ngIf="value === 'acomp'" class="acompContent">
+  <!-- <ion-button (click)="getCamera()">Camera</ion-button> -->
+  <ion-grid class="mainGrid">
+    <ion-row id="hdr">
+      <ion-col class="headerInfo">Quantidade {{quantidadeTotal}}</ion-col>
+      <ion-col class="headerInfo">Total R$ {{total}}</ion-col>
+    </ion-row>
+    <ion-card class="cardForm">
+      <form (ngSubmit)="logForm()">
+        <ion-item>
+          <ion-select id="inpCate" placeholder="Categoria" [(ngModel)]="todo.categoria" name="first">
+            <ion-select-option value="Higiene">Higiene</ion-select-option>
+            <ion-select-option value="Alimentos">Alimentos</ion-select-option>
+            <ion-select-option value="Bebidas">Bebidas</ion-select-option>
+            <ion-select-option value="Limpeza">Limpeza</ion-select-option>
+            <ion-select-option value="Hortifrúti">Hortifrúti</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Quantidade</ion-label>
+          <ion-input id="inpQuan" type="number" [(ngModel)]="todo.quantidade" name="quantidade"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Preço</ion-label>
+          <ion-input id="inpPrec" type="number" [(ngModel)]="todo.preco" name="preco"></ion-input>
+        </ion-item>
+        <div style="text-align: center;"> 
+          <button ion-button type="submit" block class="addButton">Adicionar</button>
+        </div>
+      </form>
+    </ion-card>
+    <ion-grid class="historyGrid">
+      <ion-col class="historyCol">
+        <ion-card class="historyCard">
+          <ion-card-header color="success" class="historyHeader">
+            <ion-card-title style="font-size: 1.6em;">Histórico</ion-card-title>
+          </ion-card-header>
+          <ion-select placeholder="Filtro de Categoria" name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)">
+            <ion-select-option value="Higiene">Higiene</ion-select-option>
+            <ion-select-option value="Alimentos">Alimentos</ion-select-option>
+            <ion-select-option value="Bebidas">Bebidas</ion-select-option>
+            <ion-select-option value="Limpeza">Limpeza</ion-select-option>
+            <ion-select-option value="Hortifrúti">Hortifrúti</ion-select-option>
+          </ion-select>
+          <ion-list style="background-color: #f1f1f1;" class="historyContentList" id="list">      
+            <ion-card *ngFor="let card of results.slice().reverse();" class="cardHistory">
+              <ion-card-header style="text-align: left;">
+                {{card.categoria}}  
+                <button ion-button (click)="removeCard(card)" block><ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon></button>
+              </ion-card-header>
+              <div class="horizontal-line hr1">
+                <p class="contentText">{{card.quantidade}}</p> <br>
+                <p class="subText">Quantidade </p>
+              </div>
+              <div class="horizontal-line hr2">
+                *
+              </div>
+              <div class="horizontal-line hr3">
+                <p class="contentText">R$ {{card.preco}}</p> <br>
+                <p class="subText">Preço</p> 
+              </div>
+              <div class="horizontal-line hr4">
+                =
+              </div>
+              <div class="horizontal-line hr5">
+                <p class="contentText">R$ {{card.total}}</p> <br>
+                <p class="subText">Total</p>
+              </div>
+            </ion-card>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-grid>
+  </ion-grid>
+</ion-content>
+
+
+<ion-content [fullscreen]="true"  *ngIf="value === 'list'" class="checkContent">
+  <ion-list style="background: transparent;">
+    <ion-item style="--background: transparent; ">
+      <ion-checkbox slot="start"></ion-checkbox>
+      <ion-label style="background-color: #F3EFE0;">Indeterminate checkbox</ion-label>
+    </ion-item>
+    <ion-item style="--background: transparent;">
+      <ion-checkbox slot="start" ></ion-checkbox>
+      <ion-label>Indeterminate checkbox</ion-label>
+    </ion-item>
+    <ion-item style="--background: transparent;">
+      <ion-checkbox slot="start"></ion-checkbox>
+      <ion-label>Indeterminate checkbox</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-fab horizontal="center" class="checkFab">
+    <ion-fab-button id="open-modal">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-modal trigger="open-modal" >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
