@@ -1,4 +1,3 @@
-<div class="roundedBlock">sxdsdfsdfsds</div>
 <ion-header>
   <ion-toolbar>
     <ion-segment value="all">
@@ -14,12 +13,22 @@
 
 <ion-content [fullscreen]="true"  *ngIf="value === 'acomp'" class="acompContent">
   <!-- <ion-button (click)="getCamera()">Camera</ion-button> -->
-  <ion-grid class="mainGrid">
-    <ion-row id="hdr">
-      <ion-col class="headerInfo">Quantidade {{quantidadeTotal}}</ion-col>
-      <ion-col class="headerInfo">Total R$ {{total}}</ion-col>
+  <ion-grid class="mainGrid" style="height:100%; padding-top: 10px;">
+    <ion-row id="hdr" style="height:10%">
+      <ion-col class="ion-no-padding" style="padding-right: 8px;">
+        <ion-card class="ion-no-margin ion-text-center" style="height:100%; margin-left: 16px;">
+          <h1>{{quantidadeTotal}}</h1>
+          <h4 style="font-size: 14px;">Quantidade</h4>
+        </ion-card>
+      </ion-col>
+      <ion-col class="ion-no-padding" style="padding-left: 8px">
+        <ion-card class="ion-no-margin ion-text-center" style="height:100%; margin-right: 16px;">
+          <h1>R$ {{total}}</h1>
+          <h4 style="font-size: 14px;">Total</h4>
+        </ion-card>
+      </ion-col>
     </ion-row>
-    <ion-card class="cardForm">
+    <ion-card class="cardForm" style="height: 30%">
       <form (ngSubmit)="logForm()">
         <ion-item>
           <ion-select id="inpCate" placeholder="Categoria" [(ngModel)]="todo.categoria" name="first">
@@ -43,9 +52,9 @@
         </div>
       </form>
     </ion-card>
-    <ion-grid class="historyGrid">
+    <ion-grid class="historyGrid"  style="height:60%">
       <ion-col class="historyCol">
-        <ion-card class="historyCard">
+        <ion-card class="historyCard" style="height:100%">
           <ion-card-header color="success" class="historyHeader">
             <ion-card-title style="font-size: 1.6em;">Histórico</ion-card-title>
           </ion-card-header>
@@ -58,7 +67,7 @@
           </ion-select>
           <ion-list style="background-color: #f1f1f1;" class="historyContentList" id="list">      
             <ion-card *ngFor="let card of results.slice().reverse();" class="cardHistory">
-              <ion-card-header style="text-align: left;">
+              <ion-card-header style="text-align: left; padding-left: 20px;">
                 {{card.categoria}}  
                 <button ion-button (click)="removeCard(card)" block><ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon></button>
               </ion-card-header>

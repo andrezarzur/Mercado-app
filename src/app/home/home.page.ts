@@ -93,12 +93,18 @@ export class HomePage {
   filterCategory(event: any) {
     const query = event.target.value;
     this.results = [];
+    console.log(query.length)
     if (this.history.length !== 0) {
-      for (const i in query) {
-        const result = this.history.filter(d => d.categoria.indexOf(query[i]) > -1);
-        if (result.length !== 0) {
-          this.results.push(result[0]);
+      if (query.length !== 0) {
+        for (const i in query) {
+          const result = this.history.filter(d => d.categoria.indexOf(query[i]) > -1);
+          if (result.length !== 0) {
+            this.results.push(result[0]);
+          }
         }
+      } else {
+        console.log('aqui')
+        this.results = this.history;
       }
     }
   }
