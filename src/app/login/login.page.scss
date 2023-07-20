@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway');
+
 body {
     height: 100%;
 }
+
+* {
+    font-family: 'Raleway', sans-serif !important;
+  }
 
 ion-title {
     text-align: center;
@@ -16,7 +22,7 @@ ion-card-header {
 }
 
 ion-content {
-    --background: linear-gradient(#ADD2C2, #A7D3A6);
+    --background: linear-gradient(#9e9b92, #9e9b92);
     height: 100%;
 }
 
@@ -35,7 +41,7 @@ ion-item {
     border-radius: 20px;
     margin-left: 7%;
     margin-right: 7%;
-}s
+}
 
 ion-label {
     color: red;
@@ -48,7 +54,7 @@ ion-label {
     height: 70px;
     margin-top: 15%;
     text-align: center;
-    --background: #F7EF81;
+    --background: #494843;
     --border-radius: 100px;
     --color: black;
 }

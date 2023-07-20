@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { Router } from '@angular/router'
 import { ToastController } from '@ionic/angular';
+import { IonModal } from '@ionic/angular';
 import { reduce } from 'rxjs';
 
 var _ = require('lodash');
@@ -12,8 +13,7 @@ var _ = require('lodash');
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
-  imgURL = '';
+  @ViewChild(IonModal) modal: IonModal;
 
   public todo: any = {};
   public id = 0;
@@ -22,9 +22,12 @@ export class HomePage {
   public results = [...this.history];
   public total = 0;
   public quantidadeTotal = 0;
-
+  
+  
+  
   public toDoElement: any = {};
   public toDoList: any[] = [];
+  public toDoItemName: "";
 
   constructor(
     private router: Router,
@@ -60,6 +63,11 @@ export class HomePage {
       var div = document.getElementById('inpCate');
       div!.style.borderColor = 'red';
     }
+    if(!('name' in this.todo) || this.todo.name == "" || this.todo.name == null ) {
+      error = true;
+      var div = document.getElementById('inpName');
+      div!.style.borderColor = 'red';
+    }
     return error;
   }
 
@@ -90,6 +98,17 @@ export class HomePage {
     this.value = value;
   }
 
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirm() {
+    this.toDoList.push({'name': this.toDoItemName, 'checked': false })
+    console.log(this.toDoList);
+    this.modal.dismiss( this.toDoItemName, 'confirm');
+  }
+
+
   filterCategory(event: any) {
     const query = event.target.value;
     this.results = [];
@@ -103,7 +122,6 @@ export class HomePage {
           }
         }
       } else {
-        console.log('aqui')
         this.results = this.history;
       }
     }
@@ -112,6 +130,7 @@ export class HomePage {
   toDoModal() {
 
   }
+  
 
   async presentToast(position: 'top' | 'middle' | 'bottom') {
     const toast = await this.toastController.create({
@@ -129,13 +148,4 @@ export class HomePage {
 
     await toast.present();
   }
-
-    // getCamera() {
-  //   this.camera.getPicture().then((res)=>{
-  //     this.imgURL = res;
-  //   }).catch(e => { 
-  //     console.log(e);
-  //   })
-  // }
-
 }
