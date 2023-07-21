@@ -57,9 +57,6 @@ ion-fab-button {
   padding: 0;
 }
 
-.historyGrid {
-  height: 20vh;
-}
 
 .historyCol {
   height: 10px;
@@ -80,7 +77,6 @@ ion-fab-button {
 
 .historyCard {
   text-align: center;
-  height: 40vh;
   background-color: #f1f1f1; 
   margin-top: 0; 
   margin-bottom: 0;
@@ -212,8 +208,8 @@ ion-fab-button {
 
 ion-modal#add-item-modal {
   --width: fit-content;
-  --min-width: 250px;
-  --height: 200px;
+  --min-width: 300px;
+  --height: 300px;
   --border-radius: 6px;
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
@@ -237,6 +233,31 @@ ion-modal#add-item-modal .wrapper {
   margin-bottom: 10px;
 }
 
+ion-modal#input-modal {
+  --width: 90%;
+  --height: 50%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.ios ion-toolbar {
+  --background: #494843;
+  --color: white;
+
+  --border-style: double;
+}
+
+.ios ion-segment-button.segment-button-checked {
+  color: #494843;
+  box-shadow: none;
+  z-index: 2;
+}
+
+.ios ion-segment {
+}
+
+
+
 ion-toolbar {
   --background: #494843;
   --color: white;
@@ -244,8 +265,16 @@ ion-toolbar {
   --border-style: double;
 }
 
-ion-segment-button.segment-button-checked {
-  color: #494843;
-  box-shadow: none; /* Remove the default box-shadow */
-  z-index: 2; /* Increase z-index to bring the active segment to the front */
+ ion-segment-button.segment-button-checked {
+  color: white;
+  box-shadow: none;
+  z-index: 2;
+}
+
+ion-segment {
+  --ion-color-primary: var(--ion-color-light);
+}
+
+:host ion-button {
+  --background: #494843; /* Your desired color */
 }

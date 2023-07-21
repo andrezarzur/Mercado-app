@@ -28,6 +28,7 @@ export class HomePage {
   public toDoElement: any = {};
   public toDoList: any[] = [];
   public toDoItemName: "";
+  public toDoItemCategory: "";
 
   constructor(
     private router: Router,
@@ -93,6 +94,10 @@ export class HomePage {
     }
   }
 
+  test(){
+    this.modal.present();
+  }
+
 
   updateValue(value: string) {
     this.value = value;
@@ -102,9 +107,16 @@ export class HomePage {
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirm() {
-    this.toDoList.push({'name': this.toDoItemName, 'checked': false })
-    console.log(this.toDoList);
+  confirm(isTodo: boolean) {
+    if (isTodo) {
+      this.toDoList.push({'name': this.toDoItemName, 'checked': false, 'categoria': this.toDoItemCategory})
+    } else {
+      const error = this.validate();
+      if (error) {
+        this.presentToast('bottom');
+        return;
+      }
+    }
     this.modal.dismiss( this.toDoItemName, 'confirm');
   }
 
