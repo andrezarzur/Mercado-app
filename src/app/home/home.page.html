@@ -35,17 +35,16 @@
     
     
     <div style="height: 10%; display: flex; width: 100%;" class="ion-align-items-center ion-justify-content-center">
-      <ion-button id="open-input-modal" expand="block" style="margin-left: 16px; margin-right: 16px; width: 100%;">Adicionar Item</ion-button>
+      <ion-button id="open-input-modal" expand="block" style="margin-left: 16px; margin-right: 16px; width: 100%; height: 70%;">Adicionar Item</ion-button>
     </div>
     
       <ion-grid class="historyGrid"  style="height:70%; padding-top: 10px;">
-        <ion-col class="historyCol">
-          <ion-card class="historyCard" style="height:90%">
+          <ion-card class="historyCard" style="height:95%">
             <ion-card-header class="historyHeader" style="background-color: #494843">
-              <ion-card-title style="font-size: 1.2em;" style="color: white">Histórico</ion-card-title>
+              <ion-card-title style="color: white; font-size: 24px">Histórico</ion-card-title>
             </ion-card-header>
-            <div style="text-align: center;">
-              <ion-select placeholder="Filtro de Categoria" name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)">
+            <div style="display:flex;" class="ion-justify-content-center">
+              <ion-select placeholder="Filtro de Categoria" name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)" style="padding-left: 10px;">
                 <ion-select-option value="Higiene">Higiene</ion-select-option>
                 <ion-select-option value="Alimentos">Alimentos</ion-select-option>
                 <ion-select-option value="Bebidas">Bebidas</ion-select-option>
@@ -82,7 +81,7 @@
               </ion-card>
             </ion-list>
           </ion-card>
-        </ion-col>
+
       </ion-grid>
 
   </ion-grid>
@@ -93,10 +92,10 @@
       <ion-header>
       </ion-header>
       <ion-content class="ion-padding">
-        <form (ngSubmit)="logForm()"  class="d-flex ion-align-items-center h-100">
+        <form (ngSubmit)="submitItemForm()"  class="d-flex ion-align-items-center h-100">
           <div>
             <ion-item>
-              <ion-select id="inpCate" placeholder="Categoria" [(ngModel)]="todo.categoria" name="first">
+              <ion-select interface="action-sheet" id="inpCate" placeholder="Categoria" [(ngModel)]="toBuyItem.categoria" name="first">
                 <ion-select-option value="Higiene">Higiene</ion-select-option>
                 <ion-select-option value="Alimentos">Alimentos</ion-select-option>
                 <ion-select-option value="Bebidas">Bebidas</ion-select-option>
@@ -106,15 +105,15 @@
             </ion-item>
             <ion-item>
               <ion-label position="fixed">Nome</ion-label>
-              <ion-input id="inpName" type="string" [(ngModel)]="todo.name" name="name"></ion-input>
+              <ion-input id="inpName" type="string" [(ngModel)]="toBuyItem.name" name="name"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="fixed">Quantidade</ion-label>
-              <ion-input id="inpQuan" type="number" [(ngModel)]="todo.quantidade" name="quantidade"></ion-input>
+              <ion-input id="inpQuan" type="number" [(ngModel)]="toBuyItem.quantidade" name="quantidade"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="fixed">Preço</ion-label>
-              <ion-input id="inpPrec" type="number" [(ngModel)]="todo.preco" name="preco"></ion-input>
+              <ion-input id="inpPrec" type="number" [(ngModel)]="toBuyItem.preco" name="preco"></ion-input>
             </ion-item>
           </div>
           <div style="text-align: center;"> 
@@ -130,10 +129,10 @@
 <ion-content [fullscreen]="true"  *ngIf="value === 'list'" class="checkContent">
   <div *ngIf="toDoList.length > 0">
     <ion-list style="background: transparent;">
-      <ion-item *ngFor="let toDoItem of toDoList; let i = index" style="--background: transparent; ">
-        <ion-checkbox slot="start" [(ngModel)]="toDoItem.checked" (ionChange)="test()"></ion-checkbox>
-        <ion-label style="background-color: #F3EFE0;">{{ toDoItem.name }}</ion-label>
-        <ion-badge slot="end">{{ toDoItem.categoria }}</ion-badge>
+      <ion-item *ngFor="let toBuyItem of toDoList; let i = index" style="--background: transparent; ">
+        <ion-checkbox slot="start" [(ngModel)]="toBuyItem.checked" (ionChange)="test()"></ion-checkbox>
+        <ion-label style="background-color: #F3EFE0;">{{ toBuyItem.name }}</ion-label>
+        <ion-badge slot="end" color="white" style="background-color: #494843; color: white;">{{ toBuyItem.categoria }}</ion-badge>
       </ion-item>
     </ion-list>
   </div>
@@ -165,7 +164,7 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Selecione a categoria do item</ion-label>
-            <ion-select id="inpCate" placeholder="Categoria" [(ngModel)]="toDoItemCategory" name="first">
+            <ion-select interface="action-sheet" id="inpCate" placeholder="Categoria" [(ngModel)]="toDoItemCategory" name="first">
               <ion-select-option value="Higiene">Higiene</ion-select-option>
               <ion-select-option value="Alimentos">Alimentos</ion-select-option>
               <ion-select-option value="Bebidas">Bebidas</ion-select-option>

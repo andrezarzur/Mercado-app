@@ -15,17 +15,18 @@ var _ = require('lodash');
 export class HomePage {
   @ViewChild(IonModal) modal: IonModal;
 
-  public todo: any = {};
-  public id = 0;
   public value = "acomp";
+
+  public toBuyItem: any = {};
+  public id = 0;
+  public total =  0;
+  public quantidadeTotal = 0;
+
+
   public history: any[] = [];
   public results = [...this.history];
-  public total = 0;
-  public quantidadeTotal = 0;
   
-  
-  
-  public toDoElement: any = {};
+
   public toDoList: any[] = [];
   public toDoItemName: "";
   public toDoItemCategory: "";
@@ -35,52 +36,27 @@ export class HomePage {
     private toastController: ToastController
   ) {}
 
-  logForm() {
+  submitItemForm() {
     const error = this.validate();
     if (error) {
       this.presentToast('bottom');
       return;
     }
     this.updateTotal();
-    var dataClone = _.cloneDeep(this.todo);
+    var dataClone = _.cloneDeep(this.toBuyItem);
     this.history.push(dataClone);
     this.results = [...this.history];
   }
 
-  validate() {
-    let error = false;
-    if(!('quantidade' in this.todo) || this.todo.quantidade == "" || this.todo.quantidade == null ) {
-      error = true;
-      var div = document.getElementById('inpQuan');
-      div!.style.borderColor = 'red';
-    }
-    if(!('preco' in this.todo) || this.todo.preco == "" || this.todo.preco == null ) {
-      error = true;
-      var div = document.getElementById('inpPrec');
-      div!.style.borderColor = 'red';
-    } 
-    if(!('categoria' in this.todo) || this.todo.categoria == "" || this.todo.categoria == null ) {
-      error = true;
-      var div = document.getElementById('inpCate');
-      div!.style.borderColor = 'red';
-    }
-    if(!('name' in this.todo) || this.todo.name == "" || this.todo.name == null ) {
-      error = true;
-      var div = document.getElementById('inpName');
-      div!.style.borderColor = 'red';
-    }
-    return error;
-  }
-
   updateTotal() {
-    this.todo['id'] = this.id;
-    console.log()
-    this.todo['total'] = Math.round((this.todo.preco * this.todo.quantidade) * 100 + Number.EPSILON ) / 100;
+    this.toBuyItem['id'] = this.id;
+    this.toBuyItem['total'] = Math.round((this.toBuyItem.preco * this.toBuyItem.quantidade) * 100 + Number.EPSILON ) / 100;
     this.id ++;
-    this.total += this.todo.preco * this.todo.quantidade;
+    this.total += this.toBuyItem.preco * this.toBuyItem.quantidade;
     this.total = Math.round( this.total * 100 + Number.EPSILON ) / 100;
-    this.quantidadeTotal += this.todo.quantidade;
+    this.quantidadeTotal += this.toBuyItem.quantidade;
     this.quantidadeTotal = Math.round( this.quantidadeTotal * 100 + Number.EPSILON ) / 100;
+
   }
 
   removeCard(card: any) {
@@ -124,7 +100,6 @@ export class HomePage {
   filterCategory(event: any) {
     const query = event.target.value;
     this.results = [];
-    console.log(query.length)
     if (this.history.length !== 0) {
       if (query.length !== 0) {
         for (const i in query) {
@@ -139,10 +114,34 @@ export class HomePage {
     }
   }
 
-  toDoModal() {
+  // Validate that all inputs have values
 
+  validate() {
+    let error = false;
+    if(!('quantidade' in this.toBuyItem) || this.toBuyItem.quantidade == "" || this.toBuyItem.quantidade == null ) {
+      error = true;
+      var div = document.getElementById('inpQuan');
+      div!.style.borderColor = 'red';
+    }
+    if(!('preco' in this.toBuyItem) || this.toBuyItem.preco == "" || this.toBuyItem.preco == null ) {
+      error = true;
+      var div = document.getElementById('inpPrec');
+      div!.style.borderColor = 'red';
+    } 
+    if(!('categoria' in this.toBuyItem) || this.toBuyItem.categoria == "" || this.toBuyItem.categoria == null ) {
+      error = true;
+      var div = document.getElementById('inpCate');
+      div!.style.borderColor = 'red';
+    }
+    if(!('name' in this.toBuyItem) || this.toBuyItem.name == "" || this.toBuyItem.name == null ) {
+      error = true;
+      var div = document.getElementById('inpName');
+      div!.style.borderColor = 'red';
+    }
+    return error;
   }
-  
+
+  // Error toast
 
   async presentToast(position: 'top' | 'middle' | 'bottom') {
     const toast = await this.toastController.create({

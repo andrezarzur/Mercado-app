@@ -152,6 +152,7 @@ ion-fab-button {
       bottom: 10%;
     }
   }
+  box-shadow: none;
   height: 15vh;
   margin: 2%;
 }
@@ -240,6 +241,13 @@ ion-modal#input-modal {
   --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
+ion-checkbox {
+  --checkmark-color: white;
+  --checkbox-background-checked: #9e9b92;
+  --border-color: #9e9b92;
+  --border-color-checked: #9e9b92;
+}
+
 .ios ion-toolbar {
   --background: #494843;
   --color: white;
@@ -265,7 +273,8 @@ ion-toolbar {
   --border-style: double;
 }
 
- ion-segment-button.segment-button-checked {
+
+ion-segment-button {
   color: white;
   box-shadow: none;
   z-index: 2;
