@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 
 #container {
@@ -33,7 +34,8 @@ ion-header {
 }
 
 * {
-  font-family: 'Raleway', sans-serif !important;
+  // font-family: 'Raleway', sans-serif !important;
+  font-family: 'Montserrat', sans-serif;
 }
 
 ion-fab-button {
@@ -147,14 +149,17 @@ ion-fab-button {
       width: 30px;
       height: 30px;
       border-radius: 10px;
-      background-color: red;
+      background-color: #494843;
       color: white;
       bottom: 10%;
     }
   }
   box-shadow: none;
-  height: 15vh;
-  margin: 2%;
+  height: 9vh;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-right: 12px;
+  margin-left: 12px;
 }
 
 .cardForm {
@@ -262,6 +267,12 @@ ion-checkbox {
 }
 
 .ios ion-segment {
+}
+
+.md ion-searchbar {
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 12px;
 }
 
 

@@ -4,6 +4,8 @@ import { Router } from '@angular/router'
 import { ToastController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { reduce } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { ItemCategoryService } from '../services//ItemCategoryService'
 
 var _ = require('lodash');
 
@@ -14,8 +16,10 @@ var _ = require('lodash');
 })
 export class HomePage {
   @ViewChild(IonModal) modal: IonModal;
+  
+  public searchTerm: string;
 
-  public value = "acomp";
+  public tabName = "acomp";
 
   public toBuyItem: any = {};
   public id = 0;
@@ -24,16 +28,20 @@ export class HomePage {
 
 
   public history: any[] = [];
-  public results = [...this.history];
+  public filteredHistory = [...this.history];
   
 
   public toDoList: any[] = [];
   public toDoItemName: "";
   public toDoItemCategory: "";
 
+  public itemCategories = this.itemCategoryService.getCategories();
+
   constructor(
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private modalController: ModalController,
+    private itemCategoryService: ItemCategoryService,
   ) {}
 
   submitItemForm() {
@@ -43,9 +51,11 @@ export class HomePage {
       return;
     }
     this.updateTotal();
-    var dataClone = _.cloneDeep(this.toBuyItem);
-    this.history.push(dataClone);
-    this.results = [...this.history];
+    var toBuyItemClone = _.cloneDeep(this.toBuyItem);
+    this.history.push(toBuyItemClone);
+    this.filteredHistory = [...this.history];
+    console.log(this.filteredHistory)
+    console.log(this.history);
   }
 
   updateTotal() {
@@ -63,29 +73,24 @@ export class HomePage {
     const objWithIdIndex = this.history.findIndex((obj) => obj.id === card.id);
     if (objWithIdIndex > -1) {
       this.history.splice(objWithIdIndex, 1);
-      this.results.splice(objWithIdIndex, 1);
+      this.filteredHistory.splice(objWithIdIndex, 1);
       this.total -= card.preco * card.quantidade;
       this.total = Math.round( this.total * 100 + Number.EPSILON ) / 100;
       this.quantidadeTotal -= card.quantidade;
     }
   }
 
-  test(){
-    this.modal.present();
-  }
-
-
-  updateValue(value: string) {
-    this.value = value;
-  }
-
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
+  
   confirm(isTodo: boolean) {
     if (isTodo) {
+      const error = this.validateToDo();
+      if (error) {
+        this.presentToast('bottom');
+        return;
+      }
       this.toDoList.push({'name': this.toDoItemName, 'checked': false, 'categoria': this.toDoItemCategory})
+      this.toDoItemName = '';
+      this.toDoItemCategory = '';
     } else {
       const error = this.validate();
       if (error) {
@@ -95,27 +100,26 @@ export class HomePage {
     }
     this.modal.dismiss( this.toDoItemName, 'confirm');
   }
-
-
+  
+  
   filterCategory(event: any) {
     const query = event.target.value;
-    this.results = [];
-    if (this.history.length !== 0) {
-      if (query.length !== 0) {
-        for (const i in query) {
-          const result = this.history.filter(d => d.categoria.indexOf(query[i]) > -1);
-          if (result.length !== 0) {
-            this.results.push(result[0]);
-          }
+    this.filteredHistory = [];
+    if (this.history.length == 0) {
+      return;
+    }   
+    if (query.length !== 0) {
+      for (const i in query) {
+        const result = this.history.filter(d => d.categoria.indexOf(query[i]) > -1);
+        if (result.length !== 0) {
+          this.filteredHistory.push(result[0]);
         }
-      } else {
-        this.results = this.history;
       }
+    } else {
+      this.filteredHistory = this.history;
     }
   }
-
-  // Validate that all inputs have values
-
+  
   validate() {
     let error = false;
     if(!('quantidade' in this.toBuyItem) || this.toBuyItem.quantidade == "" || this.toBuyItem.quantidade == null ) {
@@ -140,8 +144,21 @@ export class HomePage {
     }
     return error;
   }
-
-  // Error toast
+  
+  validateToDo() {
+    let error = false;
+    if(this.toDoItemCategory == "" || this.toDoItemCategory == null ) {
+      error = true;
+    }
+    if(this.toDoItemName == "" || this.toDoItemName == null ) {
+      error = true;
+    }
+    return error;
+  }
+  
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
 
   async presentToast(position: 'top' | 'middle' | 'bottom') {
     const toast = await this.toastController.create({

@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-segment value="all" style="width: 100%;">
-      <ion-segment-button value="all" (click)="updateValue('acomp')">
+      <ion-segment-button value="all" (click)="tabName='acomp'">
         Acompanhamento
       </ion-segment-button>
-      <ion-segment-button value="favorites" (click)="updateValue('list')">
+      <ion-segment-button value="favorites" (click)="tabName='list'">
         Lista
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"  *ngIf="value === 'acomp'" class="acompContent">
+<ion-content [fullscreen]="true"  *ngIf="tabName === 'acomp'" class="acompContent">
   <!-- <ion-button (click)="getCamera()">Camera</ion-button> -->
   <ion-grid class="mainGrid" style="height:100%;">
     <ion-row id="hdr" style="height: 20%;">
@@ -38,46 +38,59 @@
       <ion-button id="open-input-modal" expand="block" style="margin-left: 16px; margin-right: 16px; width: 100%; height: 70%;">Adicionar Item</ion-button>
     </div>
     
-      <ion-grid class="historyGrid"  style="height:70%; padding-top: 10px;">
+      <ion-grid class="historyGrid"  style="height:70%; padding-top: 10px; padding-right: 0px; padding-left: 0px;">
           <ion-card class="historyCard" style="height:95%">
-            <ion-card-header class="historyHeader" style="background-color: #494843">
+            <ion-card-header class="historyHeader ion-justify-content-center" style="background-color: #494843; display: flex;">
               <ion-card-title style="color: white; font-size: 24px">Histórico</ion-card-title>
+              <div style="display:flex; position: absolute; right: 0; width: 30px; margin-right: 5px;" class="ion-justify-content-center">
+                <ion-icon name="filter-outline" color="light"></ion-icon>
+                <ion-select name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)" style="padding-left: 10px; position: absolute;" interface="popover">
+                  <ion-select-option *ngFor="let itemCategory of itemCategories;" (value)="itemCategory.name">{{ itemCategory.name }}</ion-select-option>
+                </ion-select>
+              </div>
             </ion-card-header>
-            <div style="display:flex;" class="ion-justify-content-center">
-              <ion-select placeholder="Filtro de Categoria" name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)" style="padding-left: 10px;">
-                <ion-select-option value="Higiene">Higiene</ion-select-option>
-                <ion-select-option value="Alimentos">Alimentos</ion-select-option>
-                <ion-select-option value="Bebidas">Bebidas</ion-select-option>
-                <ion-select-option value="Limpeza">Limpeza</ion-select-option>
-                <ion-select-option value="Hortifrúti">Hortifrúti</ion-select-option>
-              </ion-select>
-            </div>
+            <ion-searchbar placeholder="Pesquisar" style="padding-bottom: 6px;" [(ngModel)]="searchTerm"></ion-searchbar>
             <ion-list style="background-color: #f1f1f1;" class="historyContentList" id="list">      
-              <ion-card *ngFor="let card of results.slice().reverse();" class="cardHistory">
-                <ion-card-header style="text-align: left; padding-left: 20px;">
-                  {{card.categoria}}  -  {{card.name}}
-                  <button ion-button (click)="removeCard(card)" block><ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon></button>
-                </ion-card-header>
-                <!-- <ion-row> -->
-                  <div class="horizontal-line hr1">
-                    <p class="contentText">{{card.quantidade}}</p> <br>
-                    <p class="subText">Quantidade </p>
-                  </div>
-                  <div class="horizontal-line hr2">
-                    *
-                  </div>
-                  <div class="horizontal-line hr3">
-                    <p class="contentText">R$ {{card.preco}}</p> <br>
-                    <p class="subText">Preço</p> 
-                  </div>
-                  <div class="horizontal-line hr4">
-                    =
-                  </div>
-                  <div class="horizontal-line hr5">
-                    <p class="contentText">R$ {{card.total}}</p> <br>
-                    <p class="subText">Total</p>
-                  </div>
-                <!-- </ion-row> -->
+              <ion-card *ngFor="let card of filteredHistory.slice().reverse() | filter:searchTerm" class="cardHistory">
+                <ion-row style="height: 100%;">
+                  <ion-col size="10" style="display:flex;" class="ion-align-items-center">
+                    <ion-avatar style="height: 60px; width: 60px; margin-left: 5px; margin-right: 10px; display: flex; background-color: #dbdbdb;" class="ion-align-items-center ion-justify-content-center">
+                      <ion-icon name="shirt-outline" style="height: 40px; width: 40px;"></ion-icon>
+                    </ion-avatar>
+                    <ion-col>
+                      <ion-row style="height: 20px;">
+                        <ion-text style="font-weight: bold; font-size: 16px;">
+                          {{card.name}}
+                        </ion-text>
+                      </ion-row>
+                      <ion-row style="height: 20px; font-style: italic;">
+                        <ion-text>
+                          {{card.categoria}}
+                        </ion-text>
+                      </ion-row>
+                      <ion-row style="height: 20px;">
+                        <ion-text color="medium">
+                          R$ {{card.total}}
+                        </ion-text>
+                      </ion-row>
+                    </ion-col>
+                  </ion-col>
+                  <ion-col size="2" style="display: flex;" class="ion-align-items-center ion-justify-content-center">
+                    <button id="popover-button" style="background-color: transparent;">
+                      <ion-icon name="ellipsis-vertical" style="height: 24px; width: 24px; color: #494843"></ion-icon>
+                    </button>
+                    <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+                      <ng-template>
+                        <ion-content>
+                          <ion-list style="padding: 0;">
+                            <ion-item [button]="true" [detail]="false">Editar</ion-item>
+                            <ion-item [button]="true" [detail]="false" (click)="removeCard(card)">Remover</ion-item>
+                          </ion-list>
+                        </ion-content>
+                      </ng-template>
+                    </ion-popover>
+                  </ion-col>
+                </ion-row>
               </ion-card>
             </ion-list>
           </ion-card>
@@ -96,11 +109,7 @@
           <div>
             <ion-item>
               <ion-select interface="action-sheet" id="inpCate" placeholder="Categoria" [(ngModel)]="toBuyItem.categoria" name="first">
-                <ion-select-option value="Higiene">Higiene</ion-select-option>
-                <ion-select-option value="Alimentos">Alimentos</ion-select-option>
-                <ion-select-option value="Bebidas">Bebidas</ion-select-option>
-                <ion-select-option value="Limpeza">Limpeza</ion-select-option>
-                <ion-select-option value="Hortifrúti">Hortifrúti</ion-select-option>
+                <ion-select-option *ngFor="let itemCategory of itemCategories;" (value)="itemCategory.name">{{ itemCategory.name }}</ion-select-option>
               </ion-select>
             </ion-item>
             <ion-item>
@@ -126,11 +135,11 @@
 </ion-content>
 
 
-<ion-content [fullscreen]="true"  *ngIf="value === 'list'" class="checkContent">
+<ion-content [fullscreen]="true"  *ngIf="tabName === 'list'" class="checkContent">
   <div *ngIf="toDoList.length > 0">
     <ion-list style="background: transparent;">
       <ion-item *ngFor="let toBuyItem of toDoList; let i = index" style="--background: transparent; ">
-        <ion-checkbox slot="start" [(ngModel)]="toBuyItem.checked" (ionChange)="test()"></ion-checkbox>
+        <ion-checkbox slot="start" [(ngModel)]="toBuyItem.checked" ></ion-checkbox>
         <ion-label style="background-color: #F3EFE0;">{{ toBuyItem.name }}</ion-label>
         <ion-badge slot="end" color="white" style="background-color: #494843; color: white;">{{ toBuyItem.categoria }}</ion-badge>
       </ion-item>
@@ -144,6 +153,7 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
   <ion-modal id="add-item-modal" trigger="open-modal" >
     <ng-template>
       <ion-header>
@@ -165,17 +175,14 @@
           <ion-item>
             <ion-label position="stacked">Selecione a categoria do item</ion-label>
             <ion-select interface="action-sheet" id="inpCate" placeholder="Categoria" [(ngModel)]="toDoItemCategory" name="first">
-              <ion-select-option value="Higiene">Higiene</ion-select-option>
-              <ion-select-option value="Alimentos">Alimentos</ion-select-option>
-              <ion-select-option value="Bebidas">Bebidas</ion-select-option>
-              <ion-select-option value="Limpeza">Limpeza</ion-select-option>
-              <ion-select-option value="Hortifrúti">Hortifrúti</ion-select-option>
+              <ion-select-option *ngFor="let itemCategory of itemCategories;" (value)="itemCategory.name">{{ itemCategory.name }}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-grid>
       </ion-content>
     </ng-template>
   </ion-modal>
+  
 
 </ion-content>
 
