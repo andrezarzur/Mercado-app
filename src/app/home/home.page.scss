@@ -84,6 +84,8 @@ ion-fab-button {
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
+  margin-right: 16px;
+  margin-left: 16px;
 }
 
 .headerInfo {
@@ -155,7 +157,6 @@ ion-fab-button {
     }
   }
   box-shadow: none;
-  height: 9vh;
   margin-top: 2%;
   margin-bottom: 2%;
   margin-right: 12px;

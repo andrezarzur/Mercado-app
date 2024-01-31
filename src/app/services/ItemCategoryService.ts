@@ -14,22 +14,22 @@ export class ItemCategoryService {
     {
         id: 1,
         name: 'Alimentos',
-        image: '1',
+        image: 'fast-food-outline',
     },
     {
         id: 2,
         name: 'Bebidas',
-        image: '1',
+        image: 'beer-outline',
     },
     {
         id: 3,
         name: 'Limpeza',
-        image: '1',
+        image: 'flower-outline',
     },
     {
         id: 4,
         name: 'Hortifrúti',
-        image: '1',
+        image: 'leaf-outline',
     },
   ];
 

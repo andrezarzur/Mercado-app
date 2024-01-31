@@ -44,22 +44,25 @@
               <ion-card-title style="color: white; font-size: 24px">Histórico</ion-card-title>
               <div style="display:flex; position: absolute; right: 0; width: 30px; margin-right: 5px;" class="ion-justify-content-center">
                 <ion-icon name="filter-outline" color="light"></ion-icon>
-                <ion-select name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)" style="padding-left: 10px; position: absolute;" interface="popover">
+                <ion-select name="filtroCategoria" [multiple]="true" (ionChange)="filterCategory($event)" style="padding-left: 10px; position: absolute;" interface="popover" selectedText=" ">
                   <ion-select-option *ngFor="let itemCategory of itemCategories;" (value)="itemCategory.name">{{ itemCategory.name }}</ion-select-option>
                 </ion-select>
               </div>
             </ion-card-header>
             <ion-searchbar placeholder="Pesquisar" style="padding-bottom: 6px;" [(ngModel)]="searchTerm"></ion-searchbar>
+            <div *ngIf="filteredHistory.length === 0">
+              <p style="color: #c2bfb3; margin-top: 20vh; text-align: center; font-size: 20px">Sem Items</p>
+            </div>
             <ion-list style="background-color: #f1f1f1;" class="historyContentList" id="list">      
               <ion-card *ngFor="let card of filteredHistory.slice().reverse() | filter:searchTerm" class="cardHistory">
                 <ion-row style="height: 100%;">
                   <ion-col size="10" style="display:flex;" class="ion-align-items-center">
                     <ion-avatar style="height: 60px; width: 60px; margin-left: 5px; margin-right: 10px; display: flex; background-color: #dbdbdb;" class="ion-align-items-center ion-justify-content-center">
-                      <ion-icon name="shirt-outline" style="height: 40px; width: 40px;"></ion-icon>
+                      <ion-icon [name]="getIconName(card.categoria)" style="height: 40px; width: 40px;"></ion-icon>
                     </ion-avatar>
                     <ion-col>
                       <ion-row style="height: 20px;">
-                        <ion-text style="font-weight: bold; font-size: 16px;">
+                        <ion-text style="font-weight: bold; font-size: 16px; overflow: hidden; text-overflow: ellipsis; width: 175px; text-align: left; white-space: nowrap;">
                           {{card.name}}
                         </ion-text>
                       </ion-row>
@@ -76,14 +79,14 @@
                     </ion-col>
                   </ion-col>
                   <ion-col size="2" style="display: flex;" class="ion-align-items-center ion-justify-content-center">
-                    <button id="popover-button" style="background-color: transparent;">
+                    <button [id]="'popover-button-' + card.id" style="background-color: transparent;">
                       <ion-icon name="ellipsis-vertical" style="height: 24px; width: 24px; color: #494843"></ion-icon>
                     </button>
-                    <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+                    <ion-popover [trigger]="'popover-button-' + card.id" [dismissOnSelect]="true">
                       <ng-template>
                         <ion-content>
                           <ion-list style="padding: 0;">
-                            <ion-item [button]="true" [detail]="false">Editar</ion-item>
+                            <ion-item [button]="true" [detail]="false" (click)="editCard(card)">Editar</ion-item>
                             <ion-item [button]="true" [detail]="false" (click)="removeCard(card)">Remover</ion-item>
                           </ion-list>
                         </ion-content>
@@ -138,11 +141,14 @@
 <ion-content [fullscreen]="true"  *ngIf="tabName === 'list'" class="checkContent">
   <div *ngIf="toDoList.length > 0">
     <ion-list style="background: transparent;">
-      <ion-item *ngFor="let toBuyItem of toDoList; let i = index" style="--background: transparent; ">
-        <ion-checkbox slot="start" [(ngModel)]="toBuyItem.checked" ></ion-checkbox>
-        <ion-label style="background-color: #F3EFE0;">{{ toBuyItem.name }}</ion-label>
-        <ion-badge slot="end" color="white" style="background-color: #494843; color: white;">{{ toBuyItem.categoria }}</ion-badge>
-      </ion-item>
+      <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+        <ion-item *ngFor="let toBuyItem of toDoList; let i = index" style="--background: transparent; ">
+          <ion-checkbox slot="start" [(ngModel)]="toBuyItem.checked" ></ion-checkbox>
+          <ion-label style="background-color: #F3EFE0;">{{ toBuyItem.name }}</ion-label>
+          <ion-badge slot="end" color="white" style="background-color: #494843; color: white; margin-right: 12px;">{{ toBuyItem.categoria }}</ion-badge>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      </ion-reorder-group>
     </ion-list>
   </div>
   <div *ngIf="toDoList.length === 0">

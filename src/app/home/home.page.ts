@@ -6,6 +6,7 @@ import { IonModal } from '@ionic/angular';
 import { reduce } from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import { ItemCategoryService } from '../services//ItemCategoryService'
+import { ItemReorderEventDetail } from '@ionic/angular';
 
 var _ = require('lodash');
 
@@ -15,7 +16,15 @@ var _ = require('lodash');
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+    console.log('Dragged from index', ev.detail.from, 'to', ev.detail.to);
+    this.toDoList = ev.detail.complete(this.toDoList);
+  }
   @ViewChild(IonModal) modal: IonModal;
+
+  customActionSheetOptions: any = {
+    header: 'Courses List',
+  };
   
   public searchTerm: string;
 
@@ -54,8 +63,7 @@ export class HomePage {
     var toBuyItemClone = _.cloneDeep(this.toBuyItem);
     this.history.push(toBuyItemClone);
     this.filteredHistory = [...this.history];
-    console.log(this.filteredHistory)
-    console.log(this.history);
+    this.toBuyItem = {};
   }
 
   updateTotal() {
@@ -80,6 +88,17 @@ export class HomePage {
     }
   }
 
+  editCard(card: any) {
+    const filteredHistoryItemIndex = this.filteredHistory.findIndex((obj) => obj.id === card.id);
+
+    if (filteredHistoryItemIndex > -1) {;
+      const filteredHistoryItem = this.filteredHistory[filteredHistoryItemIndex];
+      this.toBuyItem = filteredHistoryItem;
+    }
+  }
+
+  
+
   
   confirm(isTodo: boolean) {
     if (isTodo) {
@@ -97,6 +116,7 @@ export class HomePage {
         this.presentToast('bottom');
         return;
       }
+
     }
     this.modal.dismiss( this.toDoItemName, 'confirm');
   }
@@ -175,5 +195,12 @@ export class HomePage {
     });
 
     await toast.present();
+  }
+
+  getIconName(category: string): string {
+    const matchingCategory = this.itemCategories.find(item => item.name === category);
+  
+    // Check if a matching category is found, otherwise fallback to a default icon
+    return matchingCategory ? matchingCategory.image : 'default-icon';
   }
 }
